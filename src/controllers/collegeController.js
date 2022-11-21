@@ -1,30 +1,30 @@
 const mongoose = require('mongoose')
 const CollegeModels = require('../models/collegeModel')
 const InternModels = require('../models/internModel')
-const {isValidLogoLink,isValidfullName, isValidname}= require('../validator/validator')
+const {isValidLogoLink}= require('../validator/validator')
 //==================================validator==============================================================//
-const isValid =  function(value){
-    if(typeof value == "undifined" || value == "null") return false
-    if(typeof value == "string" && value.trim().length == 0) return false
+
+const isValid = function (value) {
+    if (typeof (value) === undefined ||typeof (value) === null) { return false }
+    if (typeof (value) === "string" && (value).length > 0) { return true }
 }
-//===================================createCollege======================================================================//
+//==========================================createCollege==========================================//
 const createcollege = async function (req, res) {
     try {
-        const data = req.body
-        if (Object.keys(data).length == 0)
-            return res.status(400).send("fields are Mandatory to Create")
-        let {name, fullName, logoLink} = data
-        //if (isValid(name)){return res.status(400).send({ status: false, message: "Enter valid name" })}
-        if (!isValidname(name)){return res.status(400).send({ status: false, message: "Name is required" })}
-        if (!isValidfullName(fullName)){return res.status(400).send({ status: false, message: "fullname is required" })}
-        if (!isValidLogoLink(logoLink)){return res.status(400).send({ status: false, message: "logolink is required" })}
-
-        
-        let saveData= await  CollegeModels.create(data);
-     return res.status(201).send({msg:saveData})
-    }  
-    catch (err) {
-        res.status(500).send({ status: false, message: err.message })
+        let data = req.body;
+        const { name, fullName, logoLink } = data;
+        if (Object.keys(data) == 0) return res.status(400).send({ status: false, msg: "NO data provided" })
+        if (!isValid(name)) { return res.status(400).send({status: false, msg:"Name is required or it's not valid"}) }
+        let duplicateName= await CollegeModels.findOne({name:name})
+        if(duplicateName){ return res.status(400).send({status: false, msg: "Can't create new college. College name already exist"})}
+        if (!isValid(fullName)) { return res.status(400).send({status:false, msg: "Full name is required"}) }
+        if (!isValidLogoLink(logoLink)) { return res.status(400).send({status:false, msg:"Logo is required"}) }
+        const newCollege = await CollegeModels.create(data);
+        return res.status(201).send({ status: true, msg: newCollege })
+    }
+    catch (error) {
+        console.log(error)
+        return res.status(500).send({ msg: error.message })
     }
 }
 
@@ -32,7 +32,7 @@ const createcollege = async function (req, res) {
 //==========================================================
 const getColleges = async function (req, res) {
     try {
-        let collegeName = req.query.name
+        let collegeName = req.query.collegeName
         if (!collegeName) { return res.status(400).send({status: false, msg:"College name is required"}) }
         let collegeId = await CollegeModels.find({ name: collegeName  }).select({ _id: 1 })
         if (collegeId.length==0) {return res.status(404).send({status:false, msg:"Please enter a valid name abbreviation in lowercase"})}

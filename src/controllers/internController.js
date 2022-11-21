@@ -1,8 +1,12 @@
 const mongoose = require('mongoose')
 const InternModel = require("../models/internModel");
 const CollegeModel = require("../models/collegeModel")
-const {isValidname,isValidemail,isValidmobile}= require('../validator/validator')
+const {isValidemail,isValidmobile}= require('../validator/validator')
 
+const isValid = function (value) {
+    if (typeof (value) === undefined || typeof (value) === null) { return false }
+    if (typeof (value) === "string" && (value).length > 0) { return true }
+}
 
 const createInterns = async function (req, res) {
     try {
@@ -11,11 +15,11 @@ const createInterns = async function (req, res) {
         //validations 
         if (Object.keys(data) == 0) return res.status(400).send({ status: false, msg: "NO data provided" })
 
-        if (!isValidname(name)) { return res.status(400).send({ status: false, msg: "Name is required or it should be valid" }) }
+        if (!isValid(name)) { return res.status(400).send({ status: false, msg: "Name is required or it should be valid" }) }
 
         if (!isValidemail(email)) { return res.status(400).send({ status: false, msg: "Email is required or it should be valid" }) }
 
-        if (!isValidemail(email)) { return res.status(400).send({ status: false, msg: "Please enter a valid email address" }) }
+        if (!email) { return res.status(400).send({ status: false, msg: "Email id is required" }) }
 
         let duplicateEmail= await InternModel.findOne({email:email})
         if(duplicateEmail){ return res.status(400).send({status: false, msg: "Email already exist"})}
