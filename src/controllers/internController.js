@@ -32,9 +32,9 @@ const createInterns = async function (req, res) {
         let duplicateMobile= await InternModel.findOne({mobile:mobile})
         if(duplicateMobile){ return res.status(400).send({status: false, msg: "Mobile number already exist"})}
     
-        const isMatch= await CollegeModel.findById(collegeId)
-        if(!isMatch){return res.status(400).send({status:false, msg:"please enter a valid college id"})}
-
+        //const isMatch= await CollegeModel.findById(collegeId)
+        //if(!isMatch){return res.status(400).send({status:false, msg:"please enter a valid college id"})}
+        if(!isValidObjectId(collegeId)) {return res.status(400).send({status:false, msg:"please enter a valid college id"})}
 
 
         const newIntern = await InternModel.create(data);

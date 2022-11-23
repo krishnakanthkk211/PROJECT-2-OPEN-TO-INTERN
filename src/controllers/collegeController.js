@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const CollegeModels = require('../models/collegeModel')
 const InternModels = require('../models/internModel')
-const {isValidLogoLink}= require('../validator/validator')
+const {isValidLogoLink, isValidname}= require('../validator/validator')
 //==================================validator==============================================================//
 
 const isValid = function (value) {
@@ -14,11 +14,15 @@ const createcollege = async function (req, res) {
         let data = req.body;
         const { name, fullName, logoLink } = data;
         if (Object.keys(data) == 0) return res.status(400).send({ status: false, msg: "NO data provided" })
-        if (!isValid(name)) { return res.status(400).send({status: false, msg:"Name is required or it's not valid"}) }
+        if (!isValidname(name)) { return res.status(400).send({status: false, msg:"Name is not valid"}) }
+
+        if (!isValid(name)) { return res.status(400).send({status: false, msg:"Name is required"}) }
         let duplicateName= await CollegeModels.findOne({name:name})
         if(duplicateName){ return res.status(400).send({status: false, msg: "Can't create new college. College name already exist"})}
         if (!isValid(fullName)) { return res.status(400).send({status:false, msg: "Full name is required"}) }
-        if (!isValidLogoLink(logoLink)) { return res.status(400).send({status:false, msg:"Logo is required"}) }
+        if (!isValid(logoLink)) { return res.status(400).send({status:false, msg:"Logo is required"}) }
+
+        if (!isValidLogoLink(logoLink)) { return res.status(400).send({status:false, msg:"Logolink is invalid"}) }
         const newCollege = await CollegeModels.create(data);
         return res.status(201).send({ status: true, msg: newCollege })
     }
