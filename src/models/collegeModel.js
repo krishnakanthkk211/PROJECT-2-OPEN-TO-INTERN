@@ -4,16 +4,16 @@ const collegeSchema = new mongoose.Schema({
     name: {
         type: String,
         unique: true,
-        required: 'Name is required',
+        required: true,
         lowercase: true
     },
     fullName: {
         type: String,
-        required: 'Full name is required'
+        required: true
     },
     logoLink: {
         type: String,
-        required: 'Logo is required'
+        required:true
     },
     isDeleted: {
         type: Boolean,

@@ -4,24 +4,19 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const internSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: 'Name is required'
+        required: true
     },
     email: {
         type: String,
-        validate: {
-            validator: function (email) {
-                return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-            },
-            message: "Please enter a valid email"
-        },
+       
         unique: true,
-        required: 'Email is required'
+        required:true
     },
     mobile: {
         type: String,
         unique: true,
-        required: "Mobile number is required",
-        match: /^([+]\d{2})?\d{10}$/
+        required: true
+        
     },
     collegeId: {
         type: ObjectId,

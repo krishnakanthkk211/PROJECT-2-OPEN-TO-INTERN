@@ -1,4 +1,15 @@
+
 {
+  "name": "src",
+  "version": "1.0.0",
+  "description": "Backend cohort for Lithium(Oct 2022 - Jan 2023)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "author": "krishnakanth,ankit,gourav,babitha",
+  "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
