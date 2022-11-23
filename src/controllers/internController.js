@@ -5,12 +5,8 @@ const { isValidObjectId } = require("mongoose");
 const { isValidemail, isValidmobile } = require("../validator/validator");
 
 const isValid = function (value) {
-  if (typeof value === undefined || typeof value === null) {
-    return false;
-  }
-  if (typeof value === "string" && value.length > 0) {
-    return true;
-  }
+  if (typeof value === undefined || typeof value === null) {return false;}
+  if (typeof value === "string" && value.length > 0) { return true;}
 };
 
 const createInterns = async function (req, res) {
@@ -18,7 +14,7 @@ const createInterns = async function (req, res) {
     let data = req.body;
     const { name, email, mobile, collegeName } = data;
     
-    if (Object.keys(data) == 0)
+    if (Object.keys(data).length == 0)
       return res.status(400).send({ status: false, msg: "NO data provided" });
 
     if(!isValid(collegeName)){return res.status(400).send({status:false,msg:"collegeName is required"})}
@@ -40,7 +36,7 @@ const createInterns = async function (req, res) {
     const isMatch = await CollegeModel.findOne({ name: collegeName });
     if (!isMatch) {return res.status(400).send({ status: false, msg: "please enter a valid college Name" });}
     data.collegeId = isMatch._id;
-    
+
     const newIntern = await InternModel.create(data);
     return res.status(201).send({ status: true, msg: newIntern });
 
