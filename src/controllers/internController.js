@@ -41,7 +41,7 @@ const createInterns = async function (req, res) {
     data.collegeId = isMatch._id;
     
     let createintern=await internModel.create(data)
-    res.status(201).send({status:false,data:createintern})
+    res.status(201).send({status:true,data:createintern})
    } catch (error) {
     console.log(error);
      res.status(500).send({status:false, msg: error.message });
