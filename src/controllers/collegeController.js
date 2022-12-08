@@ -37,7 +37,7 @@ const createcollege = async function (req, res) {
 
 const getColleges = async function (req, res) {
     try {
-        res.setHeader('Access-Control-Allow-Origin','*')
+        
 
         let collegeName = req.query.collegeName
         if (!collegeName) { return res.status(400).send({status: false, msg:"College name is required"}) }

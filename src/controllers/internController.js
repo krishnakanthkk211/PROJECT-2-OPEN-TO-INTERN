@@ -3,6 +3,7 @@ const InternModel = require("../models/internModel");
 const CollegeModel = require("../models/collegeModel");
 const { isValidObjectId } = require("mongoose");
 const { isValidemail, isValidmobile } = require("../validator/validator");
+const internModel = require("../models/internModel");
 
 const isValid = function (value) {
   if (typeof value === undefined || typeof value === null) {return false;}
@@ -11,7 +12,7 @@ const isValid = function (value) {
 
 const createInterns = async function (req, res) {
   try {
-    res.setHeader('Access-Control-Allow-Origin','*')
+    
 
     let data = req.body;
     const { name, email, mobile, collegeName } = data;
@@ -39,6 +40,8 @@ const createInterns = async function (req, res) {
     if (!isMatch) {return res.status(400).send({ status: false, msg: "please enter a valid college Name" });}
     data.collegeId = isMatch._id;
     
+    let createintern=await internModel.create(data)
+    res.status(201).send({status:false,data:createintern})
    } catch (error) {
     console.log(error);
      res.status(500).send({status:false, msg: error.message });

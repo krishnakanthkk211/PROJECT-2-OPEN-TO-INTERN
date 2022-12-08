@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 # Intern-Project-2 
->>>>>>> 5586d5126cf3888de374edd853b1597493dbb0f3
 # Lithium
 
 ## Open to Intern Project Requirement
